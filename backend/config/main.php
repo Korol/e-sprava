@@ -13,17 +13,39 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
+//        'request' => [
+//            'csrfParam' => '_csrf-backend',
+//        ],
+//        'user' => [
+//            'identityClass' => 'common\models\User',
+//            'enableAutoLogin' => true,
+//            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+//        ],
+//        'session' => [
+//            // this is the name of the session cookie used for login on the backend
+//            'name' => 'advanced-backend',
+//        ],
         'request' => [
-            'csrfParam' => '_csrf-backend',
+            'csrfParam' => '_backendCSRF',
+            'csrfCookie' => [
+                'httpOnly' => true,
+                'path' => '/admin',
+            ],
         ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            'identityCookie' => [
+                'name' => '_backendIdentity',
+                'path' => '/admin',
+                'httpOnly' => true,
+            ],
         ],
         'session' => [
-            // this is the name of the session cookie used for login on the backend
-            'name' => 'advanced-backend',
+            'name' => 'BACKENDSESSID',
+            'cookieParams' => [
+                'path' => '/admin',
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -37,14 +59,19 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@app/views' => '@app/backend/views'
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];
